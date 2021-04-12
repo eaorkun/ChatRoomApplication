@@ -1,6 +1,17 @@
+/* EE422C Assignment #4 submission by
+ * Eralp Orkun
+ * eao789
+ * Lab Section: Unique #17110, (5-6:30pm Thursday)
+ */
+
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * MessageOutput class which is used between SeverMain and thread to communicate
+ *
+ * @author Eralp Orkun
+ */
 public class MessageOutput
 {
    private boolean updated;
@@ -9,10 +20,11 @@ public class MessageOutput
    private String username;
    private String recipient;
    private Socket socket;
-   private ServerSocket ss;
+   private final ServerSocket ss;
    private int numSockets;
 
-   MessageOutput(ServerSocket ss){
+   MessageOutput(ServerSocket ss)
+   {
       updated = false;
       this.ss = ss;
    }
@@ -48,7 +60,8 @@ public class MessageOutput
    }
 
 
-   public ServerSocket getServerSocket(){
+   public ServerSocket getServerSocket()
+   {
       return ss;
    }
 
@@ -72,14 +85,14 @@ public class MessageOutput
       this.updated = updated;
    }
 
-   public void setSocket(Socket socket)
-   {
-      this.socket = socket;
-   }
-
    public Socket getSocket()
    {
       return socket;
+   }
+
+   public void setSocket(Socket socket)
+   {
+      this.socket = socket;
    }
 
    public boolean moreThread()
