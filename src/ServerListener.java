@@ -1,5 +1,6 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
@@ -17,31 +18,29 @@ public class ServerListener implements Runnable
    public void run()
    {
       Scanner messageScanner;
+      Socket s = null;
       try
       {
          ServerSocket ss = messageOutput.getServerSocket();
-         Socket s = ss.accept();//establishes connection
+         System.out.println("Looking for Client");
+         s = ss.accept();//establishes connection
          messageOutput.setMoreThread(true);
 
          DataInputStream dis = new DataInputStream(s.getInputStream());
          System.out.println("Server connected to a client");
-         while(s.isConnected()){
-            System.out.println("Reading input");
+         while(s.isConnected() && !Thread.interrupted()){
             messageScanner = new Scanner((String) dis.readUTF()); //wait here
             String username = messageScanner.next();
             username = "[" + username + "]";
             String message;
-            System.out.println("username= " + username);
             String recipient = messageScanner.next();
             recipient = "[" + recipient + "]";
-            System.out.println("recipient= " + recipient);
             if(messageScanner.hasNext()){
                message = messageScanner.nextLine();
             }
             else{
                message = "";
             }
-            System.out.println("message= " + message);
 
             messageOutput.setMessage(message);
             messageOutput.setRecipient(recipient);
@@ -50,14 +49,25 @@ public class ServerListener implements Runnable
             messageOutput.setUpdated(true);
          }
 
-
-         ss.close();
+         System.out.println("No active users, ending server thread");
+         s.close();
+         messageOutput.setNumSockets(messageOutput.getNumSockets()-1);
 
       }
       catch (Exception e)
       {
-         System.out.println(e);
          System.out.println("No active users, ending server thread");
+         try
+         {
+            s.close();
+         }
+         catch (Exception myException)
+         {
+         }
+         finally
+         {
+            messageOutput.setNumSockets(messageOutput.getNumSockets()-1);
+         }
       }
    }
 }

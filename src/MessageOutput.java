@@ -10,10 +10,21 @@ public class MessageOutput
    private String recipient;
    private Socket socket;
    private ServerSocket ss;
+   private int numSockets;
 
    MessageOutput(ServerSocket ss){
       updated = false;
       this.ss = ss;
+   }
+
+   public int getNumSockets()
+   {
+      return numSockets;
+   }
+
+   public void setNumSockets(int numSockets)
+   {
+      this.numSockets = numSockets;
    }
 
    public String getRecipient()

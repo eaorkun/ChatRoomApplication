@@ -20,7 +20,6 @@ public class ServerOutputThread implements Runnable
    {
       try{
          if(!messageOutput.getMessage().equals("")){
-            System.out.println(messageOutput.getRecipient() + " " + messageOutput.getUsername() + messageOutput.getMessage());
             Socket s = messageOutput.getSocket();
             DataOutputStream dos = new DataOutputStream(s.getOutputStream());
             dos.writeUTF(messageOutput.getRecipient() + " " + messageOutput.getUsername() + messageOutput.getMessage());
